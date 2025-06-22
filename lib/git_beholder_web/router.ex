@@ -11,6 +11,9 @@ defmodule GitBeholderWeb.Router do
     get  "/git/status", GitStatusController, :status
     post "/git/commit", GitCommitController, :create
     get  "/git/log", GitLogController, :index
+
+    post "/git/repositories", GitRepositoryController, :create
+    delete "/git/repositories/:repo_name", GitRepositoryController, :delete
     get  "/git/repositories", GitRepositoryController, :index
   end
 
