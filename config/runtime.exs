@@ -50,6 +50,18 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  # Set where to store the namespace.
+  # Options are `:ets` (default) or `:redis`.
+  # If you use `:redis`, you need to set the `:address` and `:port` environment variable.
+  restore_namespace_type = System.get_env("NAMESPACE_TYPE") || "ets"
+  restore_namespace_address = System.get_env("NAMESPACE_ADDRESS") || ""
+  restore_namespace_port = System.get_env("NAMESPACE_PORT") || ""
+
+  config :git_beholder, :restore_namespace,
+      type: restore_namespace_type,
+      address: restore_namespace_address,
+      port: restore_namespace_port
+
   # ## SSL Support
   #
   # To get SSL working, you will need to add the `https` key

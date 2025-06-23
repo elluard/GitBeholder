@@ -12,6 +12,11 @@ defmodule GitBeholderWeb.Router do
     post "/git/commit", GitCommitController, :create
     get  "/git/log", GitLogController, :index
     get  "/git/repositories", GitRepositoryController, :index
+
+    get  "/git/namespaces", GitNamespaceController, :index
+    post "/git/namespaces", GitNamespaceController, :create
+    put  "/git/namespaces", GitNamespaceController, :update
+    delete "/git/namespaces", GitNamespaceController, :delete
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
