@@ -1,6 +1,6 @@
-defmodule GitBeholder.GitNamespace.GitNamesaceStruct do
+defmodule GitBeholder.GitNamespace.GitNamespaceStructEts do
   @moduledoc """
-  Namespace 구조체 및 ETS 기반 CRUD 함수 제공
+  Namespace struct using ETS for storage.
   """
 
   defstruct [:name, :description, :created_at, :updated_at]
@@ -24,17 +24,21 @@ defmodule GitBeholder.GitNamespace.GitNamesaceStruct do
 
   # Create
   def create(attrs) when is_map(attrs) do
-    now = DateTime.utc_now()
-
-    struct = %__MODULE__{
-      name: attrs.name,
-      description: Map.get(attrs, :description),
-      created_at: now,
-      updated_at: now
-    }
-
-    :ets.insert(@table, {struct.name, struct})
-    {:ok, struct}
+    name = attrs.name
+    case :ets.lookup(@table, name) do
+      [{^name, _struct}] ->
+        {:error, "Namespace already exists"}
+      [] ->
+        now = DateTime.utc_now()
+        struct = %__MODULE__{
+          name: name,
+          description: Map.get(attrs, :description),
+          created_at: now,
+          updated_at: now
+        }
+        :ets.insert(@table, {struct.name, struct})
+        {:ok, struct}
+    end
   end
 
   # Read (get by name)
